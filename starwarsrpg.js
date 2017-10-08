@@ -48,21 +48,34 @@ $(window).load(function () {
         $(".characters").append(newCharDiv);
     });
 
-    $(".char-tile").on("click", function (event) {
+    $(".characters .char-tile").on("click", function (event) {
         console.log($(this).attr('id'));
         var selectedChar = $(this);
         $(".your-character").append(selectedChar);
+        $(".characters .char-tile").off("click");
 
         var selectedCharId = $(this).attr('id')
 
         jQuery.each(characterOptions, function (i, val) {
             if (val.id != selectedCharId) {
-                var unselectedChar = $("#" + val.id);                
-                $(".enemies-to-attack").append(unselectedChar);  
+                var unselectedChar = $("#" + val.id);
+                $(".enemies-to-attack").append(unselectedChar);
             }
+
+
         });
 
-      });
+        $(".enemies-to-attack .char-tile").on("click", function (event) {
+            console.log($(this).attr('id'));
+            var selectedEnemyChar = $(this);
+            $(".current-enemy-attacking").append(selectedEnemyChar);
+            $(".enemies-to-attack .char-tile").off("click");
+
+        });
+
+    });
+
+
 
 });
 
