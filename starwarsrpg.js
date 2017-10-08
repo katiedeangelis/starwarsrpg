@@ -50,12 +50,18 @@ $(window).load(function () {
 
     $(".char-tile").on("click", function (event) {
         console.log($(this).attr('id'));
-        
-        // TODO: Loop over the characters and move to correct places
-        // var playersChar = $("<div>");
-        // fridgeMagnet.addClass("letter fridge-color");
-        // fridgeMagnet.text($(this).data("data-letter"));
-        // $("#display").append(fridgeMagnet);
+        var selectedChar = $(this);
+        $(".your-character").append(selectedChar);
+
+        var selectedCharId = $(this).attr('id')
+
+        jQuery.each(characterOptions, function (i, val) {
+            if (val.id != selectedCharId) {
+                var unselectedChar = $("#" + val.id);                
+                $(".enemies-to-attack").append(unselectedChar);  
+            }
+        });
+
       });
 
 });
