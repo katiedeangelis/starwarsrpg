@@ -36,6 +36,8 @@ $(window).load(function () {
     var darth = new StarWarsChar("Darth Vader", "vader", "assets/images/darthvader.png", 210, 10, 20);
     var leia = new StarWarsChar("Princess Leia", "leia", "assets/images/leia.png", 170, 8, 16);
     var jabba = new StarWarsChar("Jabba the Hutt", "jabba", "assets/images/jabba.png", 110, 1, 3);
+    var yourPlayer
+    var enemyToAttack
 
     var characterOptions = [skywalker, darth, leia, jabba];
 
@@ -60,9 +62,9 @@ $(window).load(function () {
             if (val.id != selectedCharId) {
                 var unselectedChar = $("#" + val.id);
                 $(".enemies-to-attack").append(unselectedChar);
+            } else {
+                yourPlayer = val;
             }
-
-
         });
 
         $(".enemies-to-attack .char-tile").on("click", function (event) {
@@ -71,7 +73,22 @@ $(window).load(function () {
             $(".current-enemy-attacking").append(selectedEnemyChar);
             $(".enemies-to-attack .char-tile").off("click");
 
+            var selectedEnemyID = $(this).attr('id')
+
+            jQuery.each(characterOptions, function (i, val) {
+                if (val.id == selectedEnemyID) {
+                    enemyToAttack = val;
+                }
+            });
+
         });
+
+        $(".attack-button").on("click", function (event) {
+            enemyToAttack.health -= (yourPlayer.attack);
+            $("#" + enemyToAttack.id + " h3").text(enemyToAttack.health);
+            yourPlayer.attack += yourPlayer.baseattack;
+        });
+
 
     });
 
@@ -86,6 +103,7 @@ function StarWarsChar(name, id, image, health, attack, counter) {
     this.id = id;
     this.image = image;
     this.health = health;
+    this.baseattack = attack;
     this.attack = attack;
     this.counter = counter;
 }
