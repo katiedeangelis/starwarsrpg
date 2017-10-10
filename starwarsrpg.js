@@ -33,8 +33,8 @@
 $(window).load(function () {
 
     var skywalker = new StarWarsChar("Luke Skywalker", "luke", "assets/images/skywalker.png", 150, 6, 6);
-    var darth = new StarWarsChar("Darth Vader", "vader", "assets/images/darthvader.png", 210, 10, 20);
-    var leia = new StarWarsChar("Princess Leia", "leia", "assets/images/leia.png", 170, 8, 16);
+    var darth = new StarWarsChar("Darth Vader", "vader", "assets/images/darthvader.png", 270, 10, 20);
+    var leia = new StarWarsChar("Princess Leia", "leia", "assets/images/leia.png", 190, 8, 16);
     var jabba = new StarWarsChar("Jabba the Hutt", "jabba", "assets/images/jabba.png", 110, 1, 3);
     var yourPlayer
     var enemyToAttack
@@ -84,9 +84,15 @@ $(window).load(function () {
         });
 
         $(".attack-button").on("click", function (event) {
+            if (enemyToAttack.health > 0) {
             enemyToAttack.health -= (yourPlayer.attack);
             $("#" + enemyToAttack.id + " h3").text(enemyToAttack.health);
+            $(".current-stats").text("You attacked " + enemyToAttack.name + " for " + yourPlayer.attack + ".");
             yourPlayer.attack += yourPlayer.baseattack;
+            yourPlayer.health -= (enemyToAttack.attack);
+            $(".current-stats").append("<br>" + enemyToAttack.name + " attacked you for " + enemyToAttack.attack + ".");
+            $("#" + yourPlayer.id + " h3").text(yourPlayer.health);
+            }
         });
 
 
