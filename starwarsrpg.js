@@ -30,15 +30,88 @@
 //Your players should be able to win and lose the game no matter what character they choose
 //The challenge should come from picking the right enemies, not choosing the strongest player
 
+var yourPlayer = null;
+var enemyToAttack = null;
+
+var characterOptions = [];
+
+function StarWarsChar(name, id, image, health, attack, counter) {
+    this.name = name;
+    this.id = id;
+    this.image = image;
+    this.health = health;
+    this.baseattack = attack;
+    this.attack = attack;
+    this.counter = counter;
+}
+
+function selectYourCharacter(event) {
+    console.log($(this).attr('id'));
+    var selectedChar = $(this);
+    $(".your-character").append(selectedChar);
+    $(".characters .char-tile").off("click");
+
+    var selectedCharId = $(this).attr('id')
+
+    jQuery.each(characterOptions, function (i, val) {
+        if (val.id != selectedCharId) {
+            var unselectedChar = $("#" + val.id);
+            $(".enemies-to-attack").append(unselectedChar);
+        } else {
+            yourPlayer = val;
+        }
+    });
+
+    $(".enemies-to-attack .char-tile").on("click", selectEnemyFunction);
+    $(".attack-button").on("click", attackEnemyFunction);
+
+}
+
+function selectEnemyFunction(event) {
+    console.log($(this).attr('id'));
+    var selectedEnemyChar = $(this);
+    $(".current-enemy-attacking").append(selectedEnemyChar);
+    $(".enemies-to-attack .char-tile").off("click");
+
+    var selectedEnemyID = $(this).attr('id')
+
+    jQuery.each(characterOptions, function (i, val) {
+        if (val.id == selectedEnemyID) {
+            enemyToAttack = val;
+        }
+    });
+
+}
+
+function attackEnemyFunction(event) {
+    enemyToAttack.health -= (yourPlayer.attack);
+    $("#" + enemyToAttack.id + " h3").text(enemyToAttack.health);
+    $(".current-stats").text("You attacked " + enemyToAttack.name + " for " + yourPlayer.attack + " damage.");
+    yourPlayer.attack += yourPlayer.baseattack;
+    yourPlayer.health -= (enemyToAttack.counter);
+    $(".current-stats").append("<br>" + enemyToAttack.name + " counter attacked you for " + enemyToAttack.attack + " damage.");
+    $("#" + yourPlayer.id + " h3").text(yourPlayer.health);
+
+    if (yourPlayer.health <= 0) {
+        $(".attack-button").off("click");
+        setTimeout(function () {
+            var playAgain = confirm(enemyToAttack.name + " defeated you! Press OK to play again.");
+            if (playAgain == true) {
+                starWarsReset();
+            }
+        }, 100)
+    }
+}
+
 function starWarsReset() {
     var skywalker = new StarWarsChar("Luke Skywalker", "luke", "assets/images/skywalker.png", 150, 6, 6);
     var darth = new StarWarsChar("Darth Vader", "vader", "assets/images/darthvader.png", 270, 10, 25);
     var leia = new StarWarsChar("Princess Leia", "leia", "assets/images/leia.png", 190, 8, 16);
     var jabba = new StarWarsChar("Jabba the Hutt", "jabba", "assets/images/jabba.png", 110, 1, 3);
-    var yourPlayer = null;
-    var enemyToAttack = null;
+    yourPlayer = null;
+    enemyToAttack = null;
 
-    var characterOptions = [skywalker, darth, leia, jabba];
+    characterOptions = [skywalker, darth, leia, jabba];
 
     jQuery.each(characterOptions, function (i, val) {
         console.log(val);
@@ -55,74 +128,7 @@ function starWarsReset() {
 
     });
 
-    $(".characters .char-tile").on("click", function (event) {
-        console.log($(this).attr('id'));
-        var selectedChar = $(this);
-        $(".your-character").append(selectedChar);
-        $(".characters .char-tile").off("click");
-
-        var selectedCharId = $(this).attr('id')
-
-        jQuery.each(characterOptions, function (i, val) {
-            if (val.id != selectedCharId) {
-                var unselectedChar = $("#" + val.id);
-                $(".enemies-to-attack").append(unselectedChar);
-            } else {
-                yourPlayer = val;
-            }
-        });
-
-        $(".enemies-to-attack .char-tile").on("click", function selectEnemyFunction(event) {
-            console.log($(this).attr('id'));
-            var selectedEnemyChar = $(this);
-            $(".current-enemy-attacking").append(selectedEnemyChar);
-            $(".enemies-to-attack .char-tile").off("click");
-
-            var selectedEnemyID = $(this).attr('id')
-
-            jQuery.each(characterOptions, function (i, val) {
-                if (val.id == selectedEnemyID) {
-                    enemyToAttack = val;
-                }
-            });
-
-        });
-
-
-        $(".attack-button").on("click", function (event) {
-            enemyToAttack.health -= (yourPlayer.attack);
-            $("#" + enemyToAttack.id + " h3").text(enemyToAttack.health);
-            $(".current-stats").text("You attacked " + enemyToAttack.name + " for " + yourPlayer.attack + " damage.");
-            yourPlayer.attack += yourPlayer.baseattack;
-            yourPlayer.health -= (enemyToAttack.counter);
-            $(".current-stats").append("<br>" + enemyToAttack.name + " counter attacked you for " + enemyToAttack.attack + " damage.");
-            $("#" + yourPlayer.id + " h3").text(yourPlayer.health);
-
-            if (yourPlayer.health <= 0) {
-                $(".attack-button").off("click");
-                setTimeout(function () {
-                    var playAgain = confirm(enemyToAttack.name + " defeated you! Press OK to play again.");
-                    if (playAgain == true) {
-                        starWarsReset();
-                    }
-                }, 100)
-            }
-        });
-
-    });
+    $(".characters .char-tile").on("click", selectYourCharacter);
 }
 
 $(window).load(starWarsReset)
-
-
-
-
-function StarWarsChar(name, id, image, health, attack, counter) {
-    this.name = name;
-    this.id = id;
-    this.image = image;
-    this.health = health;
-    this.baseattack = attack;
-    this.attack = attack;
-    this.counter = counter;
-}
