@@ -35,8 +35,8 @@ function starWarsReset() {
     var darth = new StarWarsChar("Darth Vader", "vader", "assets/images/darthvader.png", 270, 10, 25);
     var leia = new StarWarsChar("Princess Leia", "leia", "assets/images/leia.png", 190, 8, 16);
     var jabba = new StarWarsChar("Jabba the Hutt", "jabba", "assets/images/jabba.png", 110, 1, 3);
-    var yourPlayer
-    var enemyToAttack
+    var yourPlayer = null;
+    var enemyToAttack = null;
 
     var characterOptions = [skywalker, darth, leia, jabba];
 
@@ -52,7 +52,7 @@ function starWarsReset() {
         $('.current-enemy-attacking div').remove();
         $('.current-enemy-attacking div').remove();
         $('.current-stats').empty();
-        
+
     });
 
     $(".characters .char-tile").on("click", function (event) {
@@ -90,33 +90,29 @@ function starWarsReset() {
 
 
         $(".attack-button").on("click", function (event) {
-            if (yourPlayer.health > 0) {
-                enemyToAttack.health -= (yourPlayer.attack);
-                $("#" + enemyToAttack.id + " h3").text(enemyToAttack.health);
-                $(".current-stats").text("You attacked " + enemyToAttack.name + " for " + yourPlayer.attack + " damage.");
-                yourPlayer.attack += yourPlayer.baseattack;
-                yourPlayer.health -= (enemyToAttack.counter);
-                $(".current-stats").append("<br>" + enemyToAttack.name + " counter attacked you for " + enemyToAttack.attack + " damage.");
-                $("#" + yourPlayer.id + " h3").text(yourPlayer.health);
-            } else if (yourPlayer.health <= 0) {
-                var playAgain = confirm(enemyToAttack.name + " defeated you! Press OK to play again.");
-                if (playAgain == true) {
-                    starWarsReset();
-                } else {
-                    $(".attack-button").off("click");
+            enemyToAttack.health -= (yourPlayer.attack);
+            $("#" + enemyToAttack.id + " h3").text(enemyToAttack.health);
+            $(".current-stats").text("You attacked " + enemyToAttack.name + " for " + yourPlayer.attack + " damage.");
+            yourPlayer.attack += yourPlayer.baseattack;
+            yourPlayer.health -= (enemyToAttack.counter);
+            $(".current-stats").append("<br>" + enemyToAttack.name + " counter attacked you for " + enemyToAttack.attack + " damage.");
+            $("#" + yourPlayer.id + " h3").text(yourPlayer.health);
 
-                }
+            if (yourPlayer.health <= 0) {
+                $(".attack-button").off("click");
+                setTimeout(function () {
+                    var playAgain = confirm(enemyToAttack.name + " defeated you! Press OK to play again.");
+                    if (playAgain == true) {
+                        starWarsReset();
+                    }
+                }, 100)
             }
         });
 
     });
 }
 
-$(window).load(starWarsReset) 
-    
-
-
-
+$(window).load(starWarsReset)
 
 
 
