@@ -41,6 +41,7 @@ function selectEnemyFunction(event) {
     var selectedEnemyChar = $(this);
     $(".current-enemy-attacking").append(selectedEnemyChar);
     $(".enemies-to-attack .char-tile").off("click");
+    $(".enemies-to-attack").hide();
 
     var selectedEnemyID = $(this).attr('id')
 
@@ -73,6 +74,7 @@ function attackEnemyFunction(event) {
 
     if (enemyToAttack.health <= 0) {
         $(".attack-button").off("click");
+        $(".enemies-to-attack").show();
         if ($(".enemies-to-attack .char-tile").length != 0) {
             //remove that enemy
             $('.current-enemy-attacking div').remove();
@@ -111,6 +113,7 @@ function starWarsReset() {
         $('.enemies-to-attack div').remove();
         $('.current-enemy-attacking div').remove();
         $('.current-stats').empty();
+        $(".enemies-to-attack").show();
 
     });
 
