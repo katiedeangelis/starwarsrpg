@@ -58,6 +58,8 @@ function selectEnemyFunction(event) {
 }
 
 function attackEnemyFunction(event) {
+    var audio = new Audio("lightsaber.mp3");    
+    audio.play();
     enemyToAttack.health -= (yourPlayer.attack);
     $("#" + enemyToAttack.id + " h3").text(enemyToAttack.health);
     $(".current-stats").text("You attacked " + enemyToAttack.name + " for " + yourPlayer.attack + " damage.");

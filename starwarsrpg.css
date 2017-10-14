@@ -19,11 +19,25 @@ h2 {
     text-align: center;
 }
 
+h4 {
+    color: white;
+    font-size: 2em;
+    text-align: center;
+    margin: 25px 0 0 25px;
+}
+
+.current-stats {
+    color: white;
+    font-size: 1em;
+    text-align: center;
+    margin: 25px 0 0 25px;
+}
+
 #star-wars-header {
-font-family: starwarsfont;
-font-size: 5em;
-text-align: center;
-transition: height 2s;
+    font-family: starwarsfont;
+    font-size: 5em;
+    text-align: center;
+    transition: height 2s;
 }
 
 .characters {
@@ -56,6 +70,7 @@ transition: height 2s;
     font-size: x-large;
     padding: 10px 0;
 }
+
 .your-character .char-tile h1,
 .your-character .char-tile h3 {
     background-color: blue;
@@ -92,4 +107,11 @@ transition: height 2s;
 .attack-button:hover {
     color: white;
     background-color: #f80404;
+}
+
+.fight-section {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
 }
