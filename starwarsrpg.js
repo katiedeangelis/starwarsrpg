@@ -15,7 +15,9 @@ function StarWarsChar(name, id, image, health, attack, counter) {
 }
 
 function selectYourCharacter(event) {
-    console.log($(this).attr('id'));
+    $(".your-character").show();
+    $(".enemies-to-attack").show();
+    $("#select-player").hide();    
     var selectedChar = $(this);
     $(".your-character").append(selectedChar);
     $(".characters .char-tile").off("click");
@@ -37,6 +39,8 @@ function selectYourCharacter(event) {
 }
 
 function selectEnemyFunction(event) {
+    $(".attack-button").show();        
+    $(".current-enemy-attacking").show();
     $(".attack-button").on("click", attackEnemyFunction);
     var selectedEnemyChar = $(this);
     $(".current-enemy-attacking").append(selectedEnemyChar);
@@ -109,14 +113,17 @@ function starWarsReset() {
         $(newCharDiv).append('<img src="' + val.image + '" />')
         $(newCharDiv).append('<h3>' + val.health + '</h3>')
         $(".characters").append(newCharDiv);
-        $('.your-character div').remove();
-        $('.enemies-to-attack div').remove();
-        $('.current-enemy-attacking div').remove();
-        $('.current-stats').empty();
-        $(".enemies-to-attack").show();
-
     });
 
+    $('.your-character div').remove();
+    $('.enemies-to-attack div').remove();
+    $('.current-enemy-attacking div').remove();
+    $('.current-stats').empty();
+    $(".enemies-to-attack").hide();
+    $(".your-character").hide();
+    $(".current-enemy-attacking").hide();
+    $("#select-player").show();
+    $(".attack-button").hide();
     $(".characters .char-tile").on("click", selectYourCharacter);
 }
 
